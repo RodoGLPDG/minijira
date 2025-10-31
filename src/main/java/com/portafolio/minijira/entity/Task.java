@@ -1,6 +1,8 @@
-package entity;
+package com.portafolio.minijira.entity;
 
 
+import com.portafolio.minijira.entity.enums.TaskPriority;
+import com.portafolio.minijira.entity.enums.TaskStatus;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

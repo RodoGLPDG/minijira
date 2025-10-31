@@ -1,4 +1,4 @@
-package entity;
+package com.portafolio.minijira.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

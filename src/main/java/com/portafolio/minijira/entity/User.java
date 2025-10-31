@@ -1,4 +1,4 @@
-package entity;
+package com.portafolio.minijira.entity;
 
 
 import jakarta.persistence.*;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "user", indexes = {
+@Table(name = "users", indexes = {
         @Index(columnList = "email", name = "idx_user_email")
 })
 public class User extends BaseEntity {

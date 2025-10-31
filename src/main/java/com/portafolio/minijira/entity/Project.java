@@ -1,4 +1,4 @@
-package entity;
+package com.portafolio.minijira.entity;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "project", indexes = {
+@Table(name = "projects", indexes = {
         @Index(columnList = "name", name = "idx_project_name")
 })
 public class Project extends BaseEntity {

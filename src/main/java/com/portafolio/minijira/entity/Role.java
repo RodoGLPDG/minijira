@@ -1,4 +1,4 @@
-package entity;
+package com.portafolio.minijira.entity;
 
 
 import jakarta.persistence.Column;
@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import java.time.Instant;
 
 @Entity
-@Table(name = "role", indexes = {
+@Table(name = "roles", indexes = {
         @Index( columnList = "name", name = "idx_role_name")
 })
 public class Role extends BaseEntity {
