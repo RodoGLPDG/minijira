@@ -2,6 +2,7 @@ package com.portafolio.minijira.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,12 +15,20 @@ import java.util.Set;
 public class User extends BaseEntity {
 
     @Column(name = "name", nullable = false, length = 120)
+    @NotBlank(message = "El nombre no puede estar vacío")
+    @Size(min = 2, max = 120, message = "El nombre debe tener entre 2 y 120 caracteres")
+    @Pattern(regexp = "^[\\p{L} .'-]+$", message = "El nombre contiene caracteres inválidos")
     private String name;
 
     @Column(name = "email", nullable = false, unique = true, length = 160)
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "Formato de correo inválido")
+    @Size(max = 160, message = "El email no puede tener más de 160 caracteres")
     private String email;
 
-    @Column(name = "password_hash")
+    @Column(name = "password_hash", nullable = false, length = 255)
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 60, max = 255, message = "El hash de la contraseña no tiene un formato válido")
     private String passwordHash;
 
     //relacion
