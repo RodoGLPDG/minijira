@@ -1,14 +1,14 @@
-package com.portafolio.minijira.service;
+package com.portafolio.minijira.service.impl;
 
-import com.portafolio.minijira.config.BCrypt.PasswordUtils;
-import com.portafolio.minijira.dto.UserCreateRequestDTO;
-import com.portafolio.minijira.dto.UserResponseDTO;
+import com.portafolio.minijira.dto.user.UserCreateRequestDTO;
+import com.portafolio.minijira.dto.user.UserResponseDTO;
 import com.portafolio.minijira.entity.Role;
 import com.portafolio.minijira.entity.User;
-import com.portafolio.minijira.exception.role.RoleNotFoundException;
+import com.portafolio.minijira.exception.role.RoleException;
 import com.portafolio.minijira.exception.user.EmailAlreadyUsedException;
 import com.portafolio.minijira.repository.RoleRepository;
 import com.portafolio.minijira.repository.UserRepository;
+import com.portafolio.minijira.service.UserService;
 import jakarta.transaction.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
                 Set<Long> missing = dto.getRoleIds().stream()
                         .filter(id -> !foundIds.contains(id))
                         .collect(Collectors.toSet());
-                throw new RoleNotFoundException("Faltan roles para los ids: " + missing);
+                throw new RoleException.RoleNotFoundException("Faltan roles para los ids: " + missing);
             }
             roles.addAll(found);
         }
@@ -89,4 +89,39 @@ public class UserServiceImpl implements UserService {
 
         return new UserResponseDTO(saved.getId(), saved.getName(), saved.getEmail(), roleNames);
     }
+
+
+    @Override
+    public UserResponseDTO readUser(Long id) {
+        try {
+            if (id == null || id <= 0) {
+                throw new IllegalArgumentException("El ID debe ser un número positivo");
+            }
+
+            // Buscar usuario
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + id));
+
+            // Mapear a respuesta (roles vacíos por ahora)
+            Set<String> roleNames = user.getRoles().stream()
+                    .map(Role::getName)
+                    .collect(Collectors.toSet());
+
+            return new UserResponseDTO(
+                    user.getId(),
+                    user.getName(),
+                    user.getEmail(),
+                    roleNames
+            );
+
+        } catch (IllegalArgumentException ex) {
+            // Errores esperados (id inválido, usuario no existe)
+            throw ex;
+
+        } catch (Exception ex) {
+            // Error inesperado en DB u otra capa
+            throw new RuntimeException("Error al obtener usuario: " + ex.getMessage(), ex);
+        }
+    }
+
 }

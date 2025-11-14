@@ -1,4 +1,4 @@
-package com.portafolio.minijira.dto;
+package com.portafolio.minijira.dto.user;
 
 import java.util.Set;
 
